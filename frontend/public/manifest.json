@@ -1,0 +1,52 @@
+{
+  "id": "/?source=pwa",
+  "name": "SmritiSaarthi AI — Cognitive Companion",
+  "short_name": "SmritiSaarthi",
+  "description": "AI-Powered Multilingual Cognitive & Memory Companion for Dementia & MCI Patients and Caregivers in Northeast India",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "window-controls-overlay"],
+  "orientation": "portrait-primary",
+  "background_color": "#FDFBF7",
+  "theme_color": "#1F4A45",
+  "categories": ["medical", "health", "lifestyle", "education"],
+  "lang": "en",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Patient Experience",
+      "short_name": "Patient",
+      "description": "Open voice assistant, memory games, and daily care",
+      "url": "/?view=patient",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Caregiver Portal",
+      "short_name": "Caregiver",
+      "description": "View clinical summaries and cognitive metrics",
+      "url": "/?view=caregiver",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
