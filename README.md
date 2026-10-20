@@ -17,9 +17,10 @@ SmritiSaarthi combines a patient-facing interface with a caregiver dashboard to 
 ## Application Preview
 
 ### Patient Portal
-![SmritiSaarthi AI dashboard](https://github.com/user-attachments/assets/90b67e86-82bd-4c78-84d6-6373bada361c)
+<img src="https://github.com/user-attachments/assets/90b67e86-82bd-4c78-84d6-6373bada361c" alt="SmritiSaarthi AI Patient Portal" width="600">
+
 ### Caregiver Dashboard
-![SmritiSaarthi Caregiver Dashboard](https://github.com/user-attachments/assets/cc50e2e1-5cac-4093-b203-ceed65b5bc57)
+<img src="https://github.com/user-attachments/assets/cc50e2e1-5cac-4093-b203-ceed65b5bc57" alt="SmritiSaarthi AI Caregiver Dashboard" width="600">
 
 
 ## Tech Stack
