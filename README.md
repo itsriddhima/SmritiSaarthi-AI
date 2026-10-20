@@ -1,102 +1,126 @@
-# SmritiSaarthi AI — Intern Round Prototype
+# SmritiSaarthi AI
 
-A scoped-down, runnable prototype of SmritiSaarthi AI (SIH26003): an AI cognitive
-companion for elderly dementia patients, with a caregiver dashboard.
+**A cognitive care companion for older adults living with dementia, designed to support memory, familiar connections, and caregiver awareness.**
 
-This covers the patient experience, caregiver dashboard, a real FastAPI +
-SQLite backend, and demo data — enough for a live intern-round demo.
-**Deferred to a later phase:** live voice/vision AI models, the doctor view,
-offline sync, and multi-patient support (see `master-prompt.md` for the
-full original scope).
+SmritiSaarthi combines a patient-facing interface with a caregiver dashboard to make everyday care more connected and easier to monitor.
 
-## What's real vs. simulated in this prototype
+## Features
 
-| Feature | This prototype |
-|---|---|
-| Family list, memories, metrics, trends, timeline, alerts | Real FastAPI + SQLite backend |
-| "Talk to Saarthi" voice conversation | Simulated (tap-to-speak canned phrases) — no live ASR/TTS yet |
-| "Who Is This?" face recognition | Simulated (random pick from seeded family) — no live CV model yet |
-| Cognitive activities | One real interactive activity ("Who Am I?"); others stubbed |
-| Doctor dashboard | Not built yet |
+- **Patient Experience:** Simplified interface for family memories and cognitive engagement.
+- **Family Memories:** Family profiles and associated personal memories.
+- **Cognitive Activity:** Interactive *Who Am I?* memory game.
+- **Caregiver Dashboard:** Patient metrics, historical trends, daily timeline, and care alerts.
+- **Alert Management:** View and acknowledge alerts.
+- **Persistent Backend:** Patient data, memories, activity results, metrics, timeline events, and alerts stored using FastAPI and SQLite.
+- **Demo Fallback:** Bundled demo data keeps supported frontend views usable when the backend is unavailable.
 
-The frontend never breaks if the backend isn't running — every API call
-falls back to local demo data (`frontend/src/demoData.js`), matching the
-original spec's "never let a missing API break the demo" principle.
+## Application Preview
 
-## Project layout
+### Patient Portal
+![SmritiSaarthi AI dashboard](https://github.com/user-attachments/assets/90b67e86-82bd-4c78-84d6-6373bada361c)
+### Caregiver Dashboard
+![SmritiSaarthi Caregiver Dashboard](https://github.com/user-attachments/assets/cc50e2e1-5cac-4093-b203-ceed65b5bc57)
 
-```
-smritisaarthi/
-├── backend/           FastAPI + SQLite API
-│   └── app/
-│       ├── main.py         App entrypoint, CORS, seeding on startup
-│       ├── database.py     SQLAlchemy engine/session
-│       ├── models.py       Patient, FamilyMember, Memory, CognitiveMetric,
-│       │                   ActivityResult, TimelineEvent, Alert
-│       ├── schemas.py       Pydantic response/request models
-│       ├── seed.py          One demo patient (Aita Devi) seeded on first run
-│       └── routers/
-│           ├── patients.py     /api/patients/... (family, memories, metrics, trends, timeline)
-│           ├── activities.py   /api/activities/result, /api/recognition/event
-│           └── alerts.py       /api/alerts, /api/alerts/{id}/acknowledge
-└── frontend/          React + Vite + Tailwind
-    └── src/
-        ├── App.jsx                    Top nav + view routing
-        ├── api.js                     Fetch client with demo-data fallback
-        ├── demoData.js                 Offline fallback data
-        ├── theme.jsx                   Shared design tokens
-        └── components/
-            ├── Landing.jsx
-            ├── PatientExperience.jsx
-            └── CaregiverDashboard.jsx
+
+## Tech Stack
+
+**Frontend:** React, Vite, Tailwind CSS  
+**Backend:** Python, FastAPI  
+**Database:** SQLite, SQLAlchemy  
+**Validation:** Pydantic
+
+## Architecture
+
+```text
+React + Vite
+     |
+  API Client ------ Demo Data Fallback
+     |
+  FastAPI
+     |
+ SQLAlchemy
+     |
+   SQLite
 ```
 
-## Running the backend
+## Getting Started
+
+### Prerequisites
+
+- Python
+- Node.js and npm
+- Git
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/itsriddhima/SmritiSaarthi-AI.git
+cd SmritiSaarthi-AI
+```
+
+### 2. Start the backend
 
 ```bash
 cd backend
-python -m venv .venv && source .venv/bin/activate   # optional but recommended
+python -m venv .venv
+```
+
+Activate the environment.
+
+**Windows PowerShell:**
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+**macOS/Linux:**
+```bash
+source .venv/bin/activate
+```
+
+Install dependencies and run the API:
+
+```bash
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
-This creates `smritisaarthi.db` (SQLite) and seeds one demo patient on first
-run. API docs are auto-generated at `http://127.0.0.1:8000/docs`.
+API documentation: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
-## Running the frontend
+### 3. Start the frontend
+
+Open a second terminal from the project root:
 
 ```bash
 cd frontend
 npm install
-cp .env.example .env      # points the app at http://127.0.0.1:8000 by default
+```
+
+Create your local environment file:
+
+**Windows PowerShell:**
+```powershell
+Copy-Item .env.example .env
+```
+
+**macOS/Linux:**
+```bash
+cp .env.example .env
+```
+
+Ensure `VITE_API_BASE_URL` points to your local backend, then run:
+
+```bash
 npm run dev
 ```
 
-Open the printed local URL (usually `http://127.0.0.1:5173`). The frontend
-works even with no backend running — it just falls back to the bundled demo
-data — but starting the backend lets you see the acknowledge-alert and
-activity-logging flows actually persist.
+Open the local URL shown by Vite, typically `http://localhost:5173`.
 
-## Demo flow suggestion (3–5 minutes)
+## Implementation Notes
 
-1. Open the landing page, briefly frame the problem.
-2. Switch to **Patient** → show the home screen, "Talk to Saarthi" (tap a
-   phrase), then "Recognize Someone" (tap to scan → reveals a family member
-   and a memory).
-3. Play "Who Am I?" to completion — the Memory Garden grows.
-4. Switch to **Caregiver** → walk through the metrics, the 7/30/90-day trend
-   chart, today's timeline, and the explainable alert card. Acknowledge the
-   alert.
-5. Close on the framing line: *"She doesn't need to understand AI. AI needs
-   to understand her."*
+- Voice interaction uses predefined phrases rather than live speech recognition or synthesis.
+- Face recognition is simulated using seeded family data.
+- *Who Am I?* is interactive; other cognitive activities may be placeholders.
+- Supported frontend views fall back to bundled demo data when the backend is unavailable.
 
-## Next phase (not in this prototype)
+SmritiSaarthi is a care-support application, not a diagnostic tool or a replacement for professional medical care.
 
-- Real ASR/TTS/translation pipeline (BHASHINI / AI4Bharat-style) for
-  Assamese, Bodo, Manipuri
-- On-device face recognition (MobileFaceNet / FaceNet-style) and object
-  recognition
-- Audio-driven avatar (MuseTalk/Wav2Lip-style)
-- Offline-first mobile app with local SQLite + sync queue
-- Doctor dashboard with longitudinal evidence views
-- Multi-patient support, auth, and role-based access
